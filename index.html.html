@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Litmus Lab Pro++</title>
+
+<style>
+body{
+    margin:0;
+    background:linear-gradient(#d0ebff,#f8fcff);
+    font-family:Arial;
+    overflow:hidden;
+}
+#topbar{
+    height:70px;
+    background:linear-gradient(90deg,#1e3c72,#2a5298);
+    color:white;
+    display:flex;
+    align-items:center;
+    padding:0 30px;
+    font-size:26px;
+}
+#lab{
+    position:relative;
+    width:100vw;
+    height:calc(100vh - 70px);
+}
+
+/* Shelf */
+#shelf{
+    position:absolute;
+    top:10px;
+    left:50%;
+    transform:translateX(-50%);
+    width:720px;
+    height:90px;
+    background:#ddd;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+#box{
+    position:absolute;
+    left:20px;
+    top:15px;
+    width:180px;
+    height:60px;
+    background:white;
+    border-radius:12px;
+    box-shadow:0 5px 12px rgba(0,0,0,.3);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:18px;
+}
+
+/* Beakers */
+.beaker{
+    position:absolute;
+    bottom:60px;
+    width:220px;
+    height:320px;
+    border:6px solid rgba(0,0,0,.3);
+    border-radius:0 0 50px 50px;
+    background:rgba(255,255,255,.4);
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.3);
+}
+.liquid{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:60%;
+    transition:1s;
+}
+.label{
+    position:absolute;
+    bottom:-45px;
+    width:100%;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+}
+.chemLabel{
+    position:absolute;
+    top:20px;
+    left:10px;
+    right:10px;
+    padding:6px;
+    background:rgba(255,255,255,0.9);
+    border-radius:12px;
+    text-align:center;
+    font-weight:bold;
+    font-size:16px;
+    box-shadow:0 0 8px rgba(0,0,0,.3);
+}
+
+#b1{left:15%;}
+#b2{left:42%;}
+#b3{left:69%;}
+
+.selector{
+    position:absolute;
+    top:-60px;
+    left:10px;
+    width:200px;
+}
+
+/* Litmus */
+.litmus{
+    position:absolute;
+    width:20px;
+    height:150px;
+    background:linear-gradient(pink,purple);
+    border-radius:6px;
+    cursor:grab;
+    box-shadow:0 0 10px rgba(0,0,0,.4);
+}
+
+/* bubbles */
+.bubble{
+    position:absolute;
+    bottom:0;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:white;
+    opacity:.7;
+    animation:float 3s infinite;
+}
+@keyframes float{
+    from{transform:translateY(0);opacity:.7;}
+    to{transform:translateY(-250px);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+<div id="topbar">🧪 Litmus Laboratory Pro++</div>
+
+<div id="lab">
+<div id="shelf">
+    <div id="box" onclick="newStrip()">Get Litmus Paper</div>
+</div>
+
+<!-- BEAKERS -->
+<div id="b1" class="beaker">
+<select class="selector">
+<option value="h2so4">H₂SO₄</option>
+<option value="hcl">HCl</option>
+<option value="lemon">Lemon</option>
+<option value="vinegar">Vinegar</option>
+<option value="water">Water</option>
+<option value="nacl">NaCl</option>
+<option value="nh3">NH₃</option>
+<option value="soap">Soap</option>
+<option value="naoh">NaOH</option>
+</select>
+<div class="liquid"></div>
+<div class="chemLabel"></div>
+<div class="label">Beaker 1</div>
+</div>
+
+<div id="b2" class="beaker">
+<select class="selector">
+<option value="h2so4">H₂SO₄</option>
+<option value="hcl">HCl</option>
+<option value="lemon">Lemon</option>
+<option value="vinegar">Vinegar</option>
+<option value="water">Water</option>
+<option value="nacl">NaCl</option>
+<option value="nh3">NH₃</option>
+<option value="soap">Soap</option>
+<option value="naoh">NaOH</option>
+</select>
+<div class="liquid"></div>
+<div class="chemLabel"></div>
+<div class="label">Beaker 2</div>
+</div>
+
+<div id="b3" class="beaker">
+<select class="selector">
+<option value="h2so4">H₂SO₄</option>
+<option value="hcl">HCl</option>
+<option value="lemon">Lemon</option>
+<option value="vinegar">Vinegar</option>
+<option value="water">Water</option>
+<option value="nacl">NaCl</option>
+<option value="nh3">NH₃</option>
+<option value="soap">Soap</option>
+<option value="naoh">NaOH</option>
+</select>
+<div class="liquid"></div>
+<div class="chemLabel"></div>
+<div class="label">Beaker 3</div>
+</div>
+
+</div>
+
+<script>
+let active=null;
+
+function newStrip(){
+    let s=document.createElement("div");
+    s.className="litmus";
+    s.style.left="120px";
+    s.style.top="160px";
+    document.body.appendChild(s);
+    s.onmousedown=()=>active=s;
+    document.onmouseup=()=>active=null;
+}
+
+document.onmousemove=function(e){
+    if(active){
+        active.style.left=e.clientX-10+"px";
+        active.style.top=e.clientY-80+"px";
+
+        document.querySelectorAll(".beaker").forEach(b=>{
+            let r=b.getBoundingClientRect();
+            if(e.clientX>r.left && e.clientX<r.right && e.clientY>r.top && e.clientY<r.bottom){
+                test(b,active);
+            }
+        });
+    }
+};
+
+function updateBeaker(beaker){
+    let sol=beaker.querySelector("select").value;
+    let liquid=beaker.querySelector(".liquid");
+    let label=beaker.querySelector(".chemLabel");
+
+    let names={
+        h2so4:"H₂SO₄ (pH 0)",
+        hcl:"HCl (pH 1)",
+        lemon:"Lemon (pH 2–3)",
+        vinegar:"Vinegar (pH 3)",
+        water:"Water (pH 7)",
+        nacl:"NaCl (pH 7)",
+        nh3:"NH₃ (pH 10)",
+        soap:"Soap (pH 11)",
+        naoh:"NaOH (pH 14)"
+    };
+
+    let acid=["h2so4","hcl","lemon","vinegar"];
+    let base=["nh3","soap","naoh"];
+
+    if(acid.includes(sol))
+        liquid.style.background="linear-gradient(#ff6666,#ffbbbb)";
+    else if(base.includes(sol))
+        liquid.style.background="linear-gradient(#66ffff,#bbffff)";
+    else
+        liquid.style.background="linear-gradient(#ccccff,#eeeeff)";
+
+    label.innerText=names[sol];
+}
+
+document.querySelectorAll(".beaker select").forEach(sel=>{
+    sel.onchange=function(){
+        updateBeaker(this.parentElement);
+    };
+});
+
+document.querySelectorAll(".beaker").forEach(b=>updateBeaker(b));
+
+function test(beaker,strip){
+    let sol=beaker.querySelector("select").value;
+    let acid=["h2so4","hcl","lemon","vinegar"];
+    let base=["nh3","soap","naoh"];
+
+    if(acid.includes(sol)) strip.style.background="red";
+    else if(base.includes(sol)) strip.style.background="blue";
+    else strip.style.background="purple";
+
+    bubble(beaker.querySelector(".liquid"));
+}
+
+function bubble(liq){
+    for(let i=0;i<6;i++){
+        let b=document.createElement("div");
+        b.className="bubble";
+        b.style.left=Math.random()*200+"px";
+        liq.appendChild(b);
+        setTimeout(()=>b.remove(),3000);
+    }
+}
+</script>
+
+</body>
+</html>
